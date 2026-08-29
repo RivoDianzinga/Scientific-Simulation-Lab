@@ -1,0 +1,28 @@
+name: Tests scientifiques
+
+on: # lance ce workflow lorsqu'un push est effectué ou une pull request est créée/modifiée
+  push:
+  pull_request:
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest # GitHub crée temporairement une machine Linux pour ce projet
+
+    steps:
+      - name: Récupérer le code
+        uses: actions/checkout@v4 # récupère le code GitHub sur cette machine
+
+      - name: Installer Python
+        uses: actions/setup-python@v5 # installe python
+        with:
+          python-version: "3.14"
+
+      - name: Installer les dépendances
+        working-directory: backend
+        run: | # reconstitue l'environnent logiciel
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+
+      - name: Exécuter les tests
+        working-directory: backend
+        run: python -m pytest # exécute les tests

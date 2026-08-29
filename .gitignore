@@ -1,0 +1,15 @@
+# Environnement Python
+backend/.venv/
+
+# Cache Python
+__pycache__/
+*.pyc
+
+# Cache pytest
+.pytest_cache/
+
+# Variables d'environnement
+.env
+
+# VS Code
+.vscode/
