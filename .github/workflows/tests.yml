@@ -10,10 +10,10 @@ jobs:
 
     steps:
       - name: Récupérer le code
-        uses: actions/checkout@v4 # récupère le code GitHub sur cette machine
+        uses: actions/checkout@v7 # récupère le code GitHub sur cette machine
 
       - name: Installer Python
-        uses: actions/setup-python@v5 # installe python
+        uses: actions/setup-python@v7 # installe python
         with:
           python-version: "3.14"
 
