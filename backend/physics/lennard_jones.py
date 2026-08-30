@@ -1,4 +1,4 @@
-# ce fichier contient les fonctions scientifiques, le moteur scientifique
+# ce fichier contient les fonctions principales qui définissent le moteur scientifique
 from scipy.differentiate import derivative
 from sympy import symbols, diff, lambdify
 

@@ -1,3 +1,9 @@
+# Ce fichier, module définit les fonctions qui testent les fonctions
+# principales du moteur scientfique.
+# Les tests sont des fonctions qui n'ont pas d'arguments, ni de 
+# valeurs retournées, ils comparent les valeurs calculées par 
+# des paramètres connus avec des valeurs de résultats connues
+# d'avance
 import numpy as np
 from physics.lennard_jones import (
     potentiel_lennard_jones,
@@ -9,7 +15,7 @@ def test_potentiel_nul_a_sigma():
     epsilon = 0.0103
     sigma = 3.40
     V = potentiel_lennard_jones(sigma,epsilon,sigma)
-    assert np.isclose(V,0.0)
+    assert np.isclose(V,0.0) # isclose compare 2 scalaires
 
 # test 2, où à distance d'équilibre, le potentiel est -epsilon
 def test_energie_minimale():
@@ -34,4 +40,4 @@ def test_force_numerique_et_analytique():
     r = np.linspace(2.5,5.0,100)
     F_num = force_lennard_jones_numerique(r,epsilon,sigma)
     F_an = force_lennard_jones_analytique(r,epsilon,sigma)
-    assert np.allclose(F_num,F_an)
+    assert np.allclose(F_num,F_an) # allclose compare 2 vecteurs
