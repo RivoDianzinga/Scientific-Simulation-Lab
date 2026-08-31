@@ -38,10 +38,13 @@ app = FastAPI(
 # Ici, on définit le middleware CORS associé à 
 # notre api app en lui donnant l'adresse du frontend afin
 # que le frontend et notre api communiquent.
+# CORS travaille avec l'origine, pas avec l'url complète
+# de la page, sans le chemin du dépot
 app.add_middleware(CORSMiddleware, 
                    allow_origins=[
                        "http://127.0.0.1:5500",
-                       "http://localhost:5500"
+                       "http://localhost:5500",
+                       "https://rivodianzinga.github.io"
                    ],
                     allow_credentials=True,
                     allow_methods=["*"],

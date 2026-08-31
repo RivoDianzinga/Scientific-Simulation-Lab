@@ -2,6 +2,17 @@
 Ici, on fait communiquer javascript et python
 */
 
+/*
+Ci-dessous, on définit une variable de URL qui déterminera si c'est Render ou c'est
+le localhost:3000 qui est utilisé. Cette variable est pratique, plutot que de
+commenter et décommenter à chaque fois. 
+*/
+const API_BASE_URL = 
+    window.location.hostname === "localhost" ||
+    window.location.hostname === "127.0.0.1"
+        ? "http://localhost:8000"
+        : "https://scientific-simulation-lab-api.onrender.com";
+
 // On récupère les références des objets HTML pour les 
 // transformer en objets javascript
 const formSimulation =
@@ -135,7 +146,8 @@ formSimulation.addEventListener("submit", async function (event) {
         // prend la réponde JSON de l'api
         try {
             const reponse = await fetch(
-                "http://127.0.0.1:8000/api/simulations/lennard-jones",
+                `${API_BASE_URL}/api/simulations/lennard-jones`,
+//                "http://127.0.0.1:8000/api/simulations/lennard-jones",
                 {
                     method: "POST",
                     headers: {
