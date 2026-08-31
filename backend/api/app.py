@@ -19,6 +19,7 @@ import numpy as np
 
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, Field
+from fastapi.middleware.cors import CORSMiddleware # utilisé pour faire communiquer le frontend et l'api du backend
 
 # importation des modules développés dans physics
 from physics.lennard_jones import (
@@ -33,6 +34,19 @@ app = FastAPI(
     title="Scientific Simulation Lab",
     version="1.0.0"
 )
+
+# Ici, on définit le middleware CORS associé à 
+# notre api app en lui donnant l'adresse du frontend afin
+# que le frontend et notre api communiquent.
+app.add_middleware(CORSMiddleware, 
+                   allow_origins=[
+                       "http://127.0.0.1:5500",
+                       "http://localhost:5500"
+                   ],
+                    allow_credentials=True,
+                    allow_methods=["*"],
+                    allow_headers=["*"]
+                   )
 
 # Définition des paramètres scientifiques que l'api doit recevoir et utiliser
 # Basemodel permet de spécifier en amont les données et leurs types

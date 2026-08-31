@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+    <title>Scientific Simulation Lab</title>
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+    <!-- charge la librairie plotly.js sur le frontend, pour les 
+     graphiques scientifiques interactifs-->
+    <script
+        src="https://cdn.plot.ly/plotly-4.0.0.min.js"
+        charset="UTF-8"
+    >
+    </script> 
+</head>
+
+<body>
+
+    <main>
+
+        <h1>Scientific Simulation Lab</h1>
+
+        <h2>Potentiel de Lennard-Jones</h2>
+        <!--
+        Ci-dessous, avec form, on crée un formulaire pour donner
+        en entrée, epsilon, sigma, r_minx, r_max et le nbre de points
+        Chacune ayant des valeurs par défaut
+        -->
+        <form id="form-simulation"> 
+
+            <label for="epsilon">
+                Epsilon ε
+            </label>
+
+            <input
+                id="epsilon"
+                type="number"
+                step="any"
+                value="0.0103"
+                required
+            >
+
+
+            <label for="sigma">
+                Sigma σ
+            </label>
+
+            <input
+                id="sigma"
+                type="number"
+                step="any"
+                value="3.4"
+                required
+            >
+
+
+            <label for="r-min">
+                Distance minimale
+            </label>
+
+            <input
+                id="r-min"
+                type="number"
+                step="any"
+                value="2.5"
+                required
+            >
+
+
+            <label for="r-max">
+                Distance maximale
+            </label>
+
+            <input
+                id="r-max"
+                type="number"
+                step="any"
+                value="5.0"
+                required
+            >
+
+
+            <label for="points">
+                Nombre de points
+            </label>
+
+            <input
+                id="points"
+                type="number"
+                value="500"
+                min="2"
+                max="5000"
+                required
+            >
+
+
+            <button type="submit">
+                Lancer la simulation
+            </button>
+
+        </form>
+
+        <!-- Ici on présente les résultats de calcul de simulation -->
+        <section id="resultats">
+
+            <h2>Résultats</h2>
+
+            <p>
+                Distance d'équilibre :
+                <span id="distance-equilibre">—</span>
+            </p>
+
+            <p>
+                Énergie minimale :
+                <span id="energie-minimale">—</span>
+            </p>
+
+        </section>
+        <!-- Ici une section graphique pour les graphes-->
+        <section id="graphiques">
+            <h2>Visualisation</h2>
+            <!-- un bloc pour le graphique du potentiel V(r)-->
+            <div
+                id="graph-potentiel"
+                class="graphique">
+
+            </div>
+            <!-- un bloc pour le graphique des forces F(r) num/anl-->    
+            <div
+                id="graph-forces"
+                class="graphique">
+
+            </div>    
+        </section>
+
+    </main>
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
