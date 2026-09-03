@@ -1,3 +1,5 @@
+# Déploiement du frontend sur GitHub avec GitHub Actions
+# Déploiement continu
 name: Deploy frontend to GitHub Pages
 
 on:

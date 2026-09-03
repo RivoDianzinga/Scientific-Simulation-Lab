@@ -3,6 +3,7 @@
 # ce fichier est envoyé sur GitHub pour lui demander
 # d'exécuter des tests à chaque fois que l'application
 # est poussée sur GitHub par "git push".
+# Tests d'intégration continue CI
 
 name: Tests scientifiques
 
