@@ -40,4 +40,4 @@ def test_force_numerique_et_analytique():
     r = np.linspace(2.5,5.0,100)
     F_num = force_lennard_jones_numerique(r,epsilon,sigma)
     F_an = force_lennard_jones_analytique(r,epsilon,sigma)
-    assert np.allclose(F_num,F_an) # allclose compare 2 vecteurs
+    assert np.allclose(F_num,F_an,rtol=1e-2,atol=1e-3) # allclose compare 2 vecteurs

@@ -12,6 +12,14 @@
         rel="stylesheet"
         href="style.css"
     >
+    <!-- pour le chemin du favicon, à partir du fichier index.html, 
+     il faut regarder le chemin vers assets/favicon.
+     -->
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg"> <!-- Ajout du favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png">
+    <link rel="icon" href="assets/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">        
     <!-- charge la librairie plotly.js sur le frontend, pour les 
      graphiques scientifiques interactifs-->
     <script
@@ -100,8 +108,10 @@
                 required
             >
 
-
-            <button type="submit">
+            <button 
+                type="submit"
+                id="simulation-submit-button"
+            >
                 Lancer la simulation
             </button>
 
@@ -139,6 +149,110 @@
 
             </div>    
         </section>
+
+        <section id="historique">
+            <!-- Ici, une section pour l'historique des calculs -->
+            <h2>Historique des simulations</h2>
+            <button id="charger-historique">
+                Charger l'historique
+            </button>
+            <div id="liste-historique"></div>
+        </section>
+
+        <section id="campagnes">
+            <!-- Ajout de la gestion des campagnes-->
+            <h2>Campagnes de simulations</h2>
+            <!-- Formulaire de la gestion de campagnes-->
+            <form id="campaign-form">
+                <label for="campaign-name">
+                    Nom de la campagne
+                </label>
+                <input
+                    type="text"
+                    id="campaign-name"
+                    required
+                    >
+
+                <label for="campaign-description">
+                    Description
+                </label>
+                
+                <textarea
+                    id="campaign-description"
+                ></textarea>
+
+                <button type="submit">
+                    Créer la campagne
+                </button>
+            </form>
+            <hr> <!-- horizontal rule, séparation thématique 
+            entre deux parties d'une page, ligne horizontale-->
+            <label for="campaign-select">
+                Campagne associée à la simulation
+            </label>
+
+            <select id="campaign-select">
+                <option value="">
+                    Aucune campagne
+                </option>
+            </select>
+            <!-- option est toujours utilisé avec select pour créer
+             une liste déroulante : select ouvre la liste déroulante, 
+             et option est un choix de la liste, autrement select (je 
+             sélectionne) et option (une option parmi lesquelles je peux 
+             choisir), une liste (select) contenant plusieurs choix 
+             (option)-->
+        </section>
+  
+        <section id="comparaison-campagne">
+        <!-- dans cette section, on compare sur les graphes les 
+         résultats de simulatin d'une campagne 
+         1er graphe: surperposition des V(r)
+         2è graphe: superpostion des F(r)
+         3è graphe: distance equilibre vs constpar
+         4è graphe : energie minimale vs constpar
+         constpar étant epsilon ou sigma-->
+            <h2>Comparer les simulations d'une campagne</h2>
+            <label for="comparison-campaign-select">
+                Choisir une campagne
+            </label>
+
+            <select id="comparison-campaign-select">
+                <option value="">
+                    Choisir une campagne
+                </option>
+            </select>
+            <div id="campaign-simulations"></div>
+            <!-- le bouton de comparaison graphique est désactivé 
+             au départ, tant que l'utilisateur n'a pas sélectionnée 
+             au moins 2 simulations, comparer n'a pas vraiment de 
+             sens-->
+            <button id="compare-simulations" disabled>
+                Comparer les simulations sélectionnées
+            </button>
+
+            <div id="comparison-potential-graph"></div>
+            <div id="comparison-force-graph"></div>
+            <div id="comparison-distance-equilibre-graph"></div>
+            <div id="comparison-energie-minimale-graph"></div>            
+        </section>
+        <!--Ici on rajoute la flèche bouton pourrevenir 
+        rapidement en haut de pas au formulaire. Ce bouton 
+        n'a pas besoin d'ètre dans une section particulière 
+        puisqu'il sera fixé à l'écran
+        type="button" évite une soumission accidentelle, 
+        aria-label aide l’accessibilité, et title donne une 
+        indication au survol.
+        -->
+        <button
+            id="back-to-top"
+            type="button" 
+            aria-label="Retour au formulaire de simulation"
+            title="Retour au formulaire"
+        >
+            ↑
+        </button>
+
 
     </main>
 

@@ -14,19 +14,35 @@ les calculs. Ce sont ces calculs qui s'affichent sur la
 page de la route.
 """
 
+# Import des fonctions services de simulation
+from services.simulation_service import (
+    run_lennard_jones_simulation,
+    get_simulation_history, 
+    load_simulation, 
+    delete_simulation
+)
+
+# Import des fonctions services de campagnes
+from services.campaign_service import (
+    create_new_campaign,
+    get_campaigns,
+    get_campaign_simulations,
+    delete_campaign
+)
+
 # importation des librairies internes à python
-import numpy as np
+#import numpy as np
 
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, Field
 from fastapi.middleware.cors import CORSMiddleware # utilisé pour faire communiquer le frontend et l'api du backend
 
 # importation des modules développés dans physics
-from physics.lennard_jones import (
-    potentiel_lennard_jones, 
-    force_lennard_jones_analytique,
-    force_lennard_jones_numerique
-)
+#from physics.lennard_jones import (
+#    potentiel_lennard_jones, 
+#    force_lennard_jones_analytique,
+#    force_lennard_jones_numerique
+#)
 
 # définition/création de l'api en utilisant FastAPI
 # (Step 1)
@@ -53,15 +69,26 @@ app.add_middleware(CORSMiddleware,
 
 # Définition des paramètres scientifiques que l'api doit recevoir et utiliser
 # Basemodel permet de spécifier en amont les données et leurs types
-# que l'api va recevoir. Fastapi vérifiera automatiquement ces règles
+# que l'api va recevoir pour les simulation. Fastapi vérifiera 
+# automatiquement ces règles
 # (Step 2)
 class ParametresLennardJones(BaseModel):
-    epsilon: float = Field(gt=0) # réel positif >=0
+    epsilon: float = Field(gt=0) # réel positif >0
     sigma: float = Field(gt=0)
     r_min: float = Field(gt=0)
     r_max: float = Field(gt=0)
-    points: int = Field(default=500, ge=2, le=5000) # 2 <= entier positif <= 5000, compris entre 2 et 5000  
+    points: int = Field(default=500, ge=3, le=5000) # 2 <= entier positif <= 5000, compris entre 3 et 5000  
+    campaign_id: int | None = None # int pour une campagne a été choisie
+                                   # None pour simulation indépendante
+# on a rajouté campaign_id afin de faire la liaison campagne vers 
+# simulation dans l'application
 
+# Création d'un modèle Pydantic permettant de spécifier en amont
+# les données et leurs types que l'api va recevoir pour les 
+# campagnes
+class CampaignCreate(BaseModel):
+    name: str
+    description: str | None = None 
 
 # Fais la requète http get sur / grace à l'api créée ci-dessus par FastAPI, 
 # et écris la fonction juste
@@ -74,15 +101,30 @@ def accueil():
 # Création de notre première route scientifique qui
 # simule les calculs de Lennard Jones
 # (Step 3)
+# ---> lancer + calculer + sauvegarder une simulation
 @app.post("/api/simulations/lennard-jones")
 def simuler_lennard_jones(parametres: ParametresLennardJones):
     # Vérification
-    if parametres.r_max <= parametres.r_min:
+    try:
+        if parametres.r_max <= parametres.r_min:
+            raise HTTPException(
+                status_code=400,
+                detail="r_max doit être supérieur à r_min"
+            )
+        return run_lennard_jones_simulation(
+            epsilon=parametres.epsilon,
+            sigma=parametres.sigma,
+            r_min=parametres.r_min,
+            r_max=parametres.r_max,
+            points=parametres.points,
+            campaign_id=parametres.campaign_id,
+            )
+    except ValueError as error:
         raise HTTPException(
-            status_code=400,
-            detail="r_max doit être supérieur à r_min"
-        )
-    # Création des points
+            status_code=422,
+            detail=str(error),
+        )        
+"""     # Création des points
     r = np.linspace(
         parametres.r_min,
         parametres.r_max,
@@ -136,4 +178,86 @@ def simuler_lennard_jones(parametres: ParametresLennardJones):
         # Les forces numériques calculées en fichier JSON
         "force_numerique":
             np.asarray(force_numerique).tolist()
+    } """
+
+# Ici, la fonction affiche l'historique des calculs
+# ---> consulter l'historique
+@app.get("/api/simulations")
+def list_simulations():
+    return get_simulation_history()
+
+# Ici, la fonction qui affiche les calculs et résultats de la 
+# simulation sélectionnée
+@app.get("/api/simulations/{simulation_id}")
+def get_simulation(simulation_id: int):
+    try:
+        simulation = load_simulation(simulation_id)
+        if simulation is None:
+            raise HTTPException(
+                status_code=404,
+                detail="Simulation introuvable",
+            )
+        return simulation
+    except ValueError as error:
+        raise HTTPException(status_code=422, detail=str(error),)
+
+# POST /api/campaigns ---> créer une campagne
+@app.post("/api/campaigns")
+def create_campaign_endpoint(
+    campaign: CampaignCreate
+):
+    return create_new_campaign(
+        name=campaign.name,
+        description=campaign.description,
+    )
+
+# GET /api/campaigns
+@app.get("/api/campaigns")
+def list_campaigns():
+    return get_campaigns()
+
+# Ici, on définit l'api qui permet de récupérer les simulations 
+# d'une campagne référencée par son id
+@app.get("/api/campaigns/{campaign_id}/simulations")
+def list_campaign_simulations(campaign_id: int):
+    result = get_campaign_simulations(campaign_id)
+    if result is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Campagne introuvable",
+        )
+    return result
+
+# Ici, on définit la fonction api qui supprime une simulation 
+# par son id
+@app.delete("/api/simulations/{simulation_id}")
+def remove_simulation(simulation_id: int):
+    deleted = delete_simulation(simulation_id)
+
+    if not deleted:
+        raise HTTPException(
+            status_code=404,
+            detail="Simulation introuvable",
+        )
+
+    return {
+        "message": "Simulation supprimée",
+        "simulation_id": simulation_id,
+    }
+
+# Ici, on définit la fonction api qui supprime une campagne 
+# par son id
+@app.delete("/api/campaigns/{campaign_id}")
+def remove_campaign(campaign_id: int):
+    deleted = delete_campaign(campaign_id)
+
+    if not deleted:
+        raise HTTPException(
+            status_code=404,
+            detail="Campagne introuvable",
+        )
+
+    return {
+        "message": "Campagne supprimée",
+        "campaign_id": campaign_id,
     }

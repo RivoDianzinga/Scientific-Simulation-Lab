@@ -42,3 +42,33 @@ Améliore l'apparence des graphiques
     min-height: 420px;
     margin-bottom: 30px;
 }
+/*
+Améliore l'apparence de l'historique 
+*/
+#historique {
+    margin-top: 2rem;
+}
+.simulation-history-item {
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+/*
+Améloire le bouton du retour au formulaire
+Ci-dessous, "position: fixed;" signifie que le bouton reste 
+en bas à droite de l’écran même lorsqu'on descends dans la page.
+*/
+#back-to-top {
+    position: fixed; 
+    right: 24px;
+    bottom: 24px;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 1000;
+    display: none;
+}
