@@ -14,6 +14,29 @@ on: # lance ce workflow lorsqu'un push est effectué ou une pull request est cr�
 jobs:
   tests:
     runs-on: ubuntu-latest # GitHub crée temporairement une machine Linux pour ce projet
+    services:
+      postgres:
+        image: postgres:16
+
+        env:
+          POSTGRES_DB: scientific_simulation_lab_test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+
+        ports:
+          - 5432:5432
+
+        options: >-
+          --health-cmd="pg_isready -U postgres"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+    env:
+      PGHOST: localhost
+      PGPORT: 5432
+      PGDATABASE: scientific_simulation_lab_test
+      PGUSER: postgres
+      PGPASSWORD: postgres
 
     steps:
       - name: Récupérer le code
@@ -29,6 +52,11 @@ jobs:
         run: | # reconstitue l'environnent logiciel
           python -m pip install --upgrade pip
           python -m pip install -r requirements.txt
+
+      - name: Initialiser la base de test
+        working-directory: backend
+        run: |
+          psql -f database/schema.sql
 
       - name: Exécuter les tests
         working-directory: backend
