@@ -14,7 +14,7 @@ on: # lance ce workflow lorsqu'un push est effectué ou une pull request est cr�
 jobs:
   tests:
     runs-on: ubuntu-latest # GitHub crée temporairement une machine Linux pour ce projet
-    services:
+    services: # petite base PostgreSQL temporaire, créée uniquement pendant les tests
       postgres:
         image: postgres:16
 
@@ -53,7 +53,7 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install -r requirements.txt
 
-      - name: Initialiser la base de test
+      - name: Initialiser la base de test # Initialisation de cette base temporaire
         working-directory: backend
         run: |
           psql -f database/schema.sql

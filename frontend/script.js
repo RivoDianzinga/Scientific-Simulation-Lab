@@ -52,7 +52,7 @@ function afficherGraphiques(donnees) {
     };
 
     const layoutPotentiel = {
-
+        autosize: true,
         title: {
             text: "Potentiel de Lennard-Jones"
         },
@@ -105,7 +105,7 @@ function afficherGraphiques(donnees) {
     };
 
     const layoutForces = {
-
+        autosize: true,
         title: {
             text: "Forces interatomiques"
         },
@@ -805,6 +805,7 @@ function detecterParametreComparaison(simulations) {
 function afficherComparaison(simulations) {
     const parametreComparaison =
         detecterParametreComparaison(simulations);
+    const configPlot = {responsive: true};
 
     if (parametreComparaison === null) {
         alert(
@@ -832,6 +833,7 @@ function afficherComparaison(simulations) {
         "comparison-potential-graph",
         tracesPotentiel,
         {
+            autosize: true,
             title: {text: "Comparaison des potentiels V(r)"},
 
             xaxis: {
@@ -856,7 +858,8 @@ function afficherComparaison(simulations) {
                 b: 80,
                 t:80
             }
-        }
+        }, 
+        configPlot
     );
     // Graphe 2 - Comparaison F(r)  
     const tracesForce =
@@ -873,6 +876,7 @@ function afficherComparaison(simulations) {
         "comparison-force-graph",
         tracesForce,
         {
+            autosize: true,
             title: {text: "Comparaison des forces interatomiques F(r)"},
 
             xaxis: {
@@ -897,7 +901,8 @@ function afficherComparaison(simulations) {
                 b: 80,
                 t: 80
             }
-        }
+        }, 
+        configPlot
     );  
     // Graphe 3 Distance equilibre en fonction du paramètre
     const parametres =
@@ -924,6 +929,7 @@ function afficherComparaison(simulations) {
             }
         ],
         {
+            autosize: true,
             title: { text: 
                 `Distance d'équilibre en fonction de ${parametreComparaison}`},
 
@@ -946,8 +952,9 @@ function afficherComparaison(simulations) {
                 r: 180,
                 b: 80,
                 t: 80
-            }
-        }
+            },
+       },
+       configPlot
     );
     // Graphe 4 - energie minimale en fonction du parametre
         const energiesMinimales =
@@ -968,6 +975,7 @@ function afficherComparaison(simulations) {
             }
         ],
         {
+            autosize: true,
             title: {text: 
                 `Énergie minimale en fonction de ${parametreComparaison}`},
 
@@ -990,8 +998,9 @@ function afficherComparaison(simulations) {
                 r: 180,
                 b: 80,
                 t: 80
-            }
-        }
+            },
+        },
+        configPlot
     );
 }
 

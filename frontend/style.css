@@ -72,3 +72,22 @@ en bas à droite de l’écran même lorsqu'on descends dans la page.
     z-index: 1000;
     display: none;
 }
+/*
+Amélioration de la visualisation des graphes
+*/
+#comparison-potential-graph,
+#comparison-force-graph,
+#comparison-distance-equilibre-graph,
+#comparison-energie-minimale-graph {
+    width: 100%;
+    min-height: 450px;
+}
+
+@media (max-width: 768px) {
+    #comparison-potential-graph,
+    #comparison-force-graph,
+    #comparison-distance-equilibre-graph,
+    #comparison-energie-minimale-graph {
+        min-height: 360px;
+    }
+}

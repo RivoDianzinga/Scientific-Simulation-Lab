@@ -3,7 +3,9 @@
 Scientific Simulation Lab est une application scientifique qui, à partir de la distance r entre deux atomes, et deux paramètres epsilon et sigma :
 
 - calcule la distance d'équilibre et l'énergie minimale ;
-- et visualise le potentiel de Lennard-Jones et les forces interatomiques en fonction de la distance r.
+- visualise le potentiel de Lennard-Jones et les forces interatomiques en fonction de la distance r ;
+- et compare visuellement les simulations d'une campagne, en vue de
+  déduire un principe sur le potentiel de Lennard-Jones
 
 # Objectif du modèle scientifique
 
@@ -22,6 +24,7 @@ L'application calcule notamment :
 
 - Frontend : [Scientific-Simulation-Lab](https://rivodianzinga.github.io/Scientific-Simulation-Lab/)
 - Backend : [API Simulation](https://scientific-simulation-lab-api.onrender.com)
+- Base de données : [PostgreSQL]()
 
 # Fonctionnalités
 
