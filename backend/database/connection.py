@@ -10,8 +10,14 @@ import psycopg
 from dotenv import load_dotenv
 
 load_dotenv()
-
+# On fait évoluer la connexion locale vers un serveur par 
+# database_url
+# Sur ce pc, database_url absente ---> postgresql local
+# database_url présente ---> postgresql sur connexion Neon
 def get_connection():
+    database_url = os.getenv("DATABASE_URL")
+    if database_url:
+        return psycopg.connect(database_url)
     return psycopg.connect(
         host=os.getenv("PGHOST"),
         port=os.getenv("PGPORT"),
